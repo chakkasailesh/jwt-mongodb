@@ -4,7 +4,7 @@ const { products } = require('../utils/db')
 const { ObjectId } = require('mongodb')
 const log = require('../utils/logger')
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
   try {
     const { id } = req.params
     const product = await products.findOne({ _id: new ObjectId(id) })
@@ -13,8 +13,7 @@ router.get('/:id', async (req, res) => {
     }
     return res.status(404).json({ message: 'No products found' })
   } catch (error) {
-    log.error(error)
-    return res.status(500).json({ message: 'something went wrong' })
+    next(error)
   }
 })
 

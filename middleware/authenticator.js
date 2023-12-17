@@ -15,8 +15,7 @@ const authenticate = async (req, res, next) => {
       else return res.status(401).json({ message: 'Token invalid' })
     }
   } catch (error) {
-    log.error(error)
-    return res.status(500).json({ message: 'Something went wrong' })
+    next(error)
   }
 }
 
