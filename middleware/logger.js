@@ -12,15 +12,13 @@ const log = winston.createLogger({
   transports: [new winston.transports.Console()],
 })
 
-const loggerstart = (req, res, next) => {
+const logger = (req, res, next) => {
   const { method, url } = req
   log.info('request recieved', { method, url })
-  next()
-}
-const loggerend = (req, res, next) => {
-  const { method, url } = req
-  log.info('response sent', { method, url })
+  res.on('finish', () => {
+    log.info('response sent', { method, url })
+  })
   next()
 }
 
-module.exports = { loggerstart, loggerend }
+module.exports = logger
